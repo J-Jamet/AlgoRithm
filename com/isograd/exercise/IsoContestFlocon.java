@@ -18,7 +18,7 @@ public class IsoContestFlocon {
     }
 
     public static void doFirsts(int n) {
-        List<String> ok = new ArrayList<>();
+        List<String> snow = new ArrayList<>();
         for(int j = 0; j<n/2; j++) {
             String line = "";
             int nbrPoints = n / 2;
@@ -33,7 +33,7 @@ public class IsoContestFlocon {
                 line = line + ".";
             }
             System.out.println(line);
-            ok.add(line);
+            snow.add(line);
         }
 
         String middle = "";
@@ -42,8 +42,8 @@ public class IsoContestFlocon {
         }
         System.out.println(middle);
 
-        Collections.reverse(ok);
-        for(String lineR : ok) {
+        Collections.reverse(snow);
+        for(String lineR : snow) {
             System.out.println(lineR);
         }
     }

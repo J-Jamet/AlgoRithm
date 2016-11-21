@@ -23,6 +23,5 @@ public class IsoContestMotLong {
                 max = lengthWord;
         }
         System.out.println(max);
-	/* Vous pouvez aussi effectuer votre traitement une fois que vous avez lu toutes les données.*/
     }
 }

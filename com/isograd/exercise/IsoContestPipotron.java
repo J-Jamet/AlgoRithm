@@ -6,105 +6,72 @@
  * to display variable in a dedicated area.
  * ***/
 package com.isograd.exercise;
-
 import java.util.*;
 
 public class IsoContestPipotron {
-
-    private static List<String> lastGoodSplitPhrase;
-
     public static void main( String[] argv ) throws Exception {
+        String  line;
         Scanner sc = new Scanner(System.in);
 
-        int n_nbrComposants = Integer.parseInt(sc.nextLine());
-
-        String ligne2 = sc.nextLine();
-        String[] n_tabString = ligne2.split(" ");
+        int n_nbrCompo = Integer.parseInt(sc.nextLine());
         List<Integer> pNList = new ArrayList<>();
 
-        int t_sommePN = 0;
-        for (int i = 0; i < n_nbrComposants; i++) {
-            int pN = Integer.parseInt(n_tabString[i]);
-            pNList.add(pN);
-            t_sommePN += pN;
+        String[] ligne2 = sc.nextLine().split(" ");
+        for(int i = 0; i< n_nbrCompo; i++) {
+            pNList.add(Integer.parseInt(ligne2[i]));
         }
 
-        List<List<String>> possiblePhrases = new ArrayList<>();
-        for (int pN : pNList) {
-            List<String> listElement = new ArrayList<>();
-            for (int i = 0; i < pN; i++) {
-                listElement.add(sc.nextLine());
+        List<List<String>> listComposants = new ArrayList<>();
+        for(int pN : pNList) {
+            List<String> listElements = new ArrayList<>();
+            for (int i = 0; i <pN; i++) {
+                listElements.add(sc.nextLine());
             }
-            possiblePhrases.add(listElement);
+            listComposants.add(listElements);
         }
 
-        int q_nbrPhraseAVerifier = Integer.parseInt(sc.nextLine());
+        int q_nbrPhraseAverifier = Integer.parseInt(sc.nextLine());
 
         List<String> phrases = new ArrayList<>();
-        for (int i = 0; i < q_nbrPhraseAVerifier; i++) {
-            String phrase = sc.nextLine();
-            phrases.add(phrase);
+        for(int i = 0; i< q_nbrPhraseAverifier; i++) {
+            phrases.add(sc.nextLine());
         }
 
-        int nbrPipotrons = 0;
+        int v_pipotrons = 0;
 
-
-        for (String phrase : phrases) {
-            if(matchWithOnePossibleInColumn(phrase, possiblePhrases)) {
-                nbrPipotrons++;
+        for(String phrase : phrases) {
+            if(elementPossible(phrase, listComposants)) {
+                v_pipotrons++;
             }
         }
 
-        System.out.println(nbrPipotrons);
+        System.out.println(v_pipotrons);
     }
 
+    public static boolean elementPossible(String phrase, List<List<String>> listComposants) {
 
-    public static boolean matchWithOnePossibleInColumn(String phrase, List<List<String>> listPossibleElements) {
-
-        if (phrase.startsWith(" "))
+        if(phrase.startsWith(" "))
             phrase = phrase.substring(1);
 
-        if(listPossibleElements.isEmpty()) {
+        // point d'arrêt
+        if(listComposants.isEmpty())
             return phrase.isEmpty();
-        } else {
-            List<String> listComposants = listPossibleElements.get(0);
+        else {
+            List<String> elementsComposant = listComposants.get(0);
             boolean matchElement = false;
-            for (String possible : listComposants) {
-                if (phrase.startsWith(possible)) {
-                    String newPhrase = phrase.substring(possible.length());
-
-                    List<List<String>> newListPossibleElements = new ArrayList<>();
-                    newListPossibleElements.addAll(listPossibleElements);
-                    newListPossibleElements.remove(0);
-                    if(matchWithOnePossibleInColumn(newPhrase, newListPossibleElements))
+            for(String element : elementsComposant) {
+                if(phrase.startsWith(element)) {
+                    // Tronquer le début de la phrase
+                    String phraseTronquee = phrase.substring(element.length());
+                    List<List<String>> listComposantsTronquee = new ArrayList<>(listComposants);
+                    listComposantsTronquee.remove(0);
+                    // Tronquer la liste des composants
+                    if(elementPossible(phraseTronquee, listComposantsTronquee))
                         matchElement = true;
                 }
             }
             return matchElement;
         }
+
     }
-
-    /*
-
-    3
-    2 3 4
-    je suis venu
-    je suis parti de
-    chez toi
-    chez moi
-    a la maison
-    en voiture.
-    en train.
-    en metro.
-    a cheval.
-    4
-    je suis venu chez toi en train.
-    je suis venu a cheval. a la maison
-    je suis venu en train
-    je suis parti de chez moi en metro.
-
-    useful
-    http://stackoverflow.com/questions/1075656/simple-way-to-find-if-two-different-lists-contain-exactly-the-same-elements
-
-     */
 }
